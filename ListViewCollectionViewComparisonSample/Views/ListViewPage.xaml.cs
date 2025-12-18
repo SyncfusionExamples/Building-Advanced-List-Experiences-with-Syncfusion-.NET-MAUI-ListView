@@ -1,8 +1,15 @@
 using Syncfusion.Maui.DataSource;
 namespace ListViewCollectionViewComparisonSample;
 
+/// <summary>
+/// Page demonstrating Syncfusion SfListView with grouping, swipe actions,
+/// drag-and-drop and manual load-more (with lazy-loading spinner).
+/// </summary>
 public partial class ListViewPage : ContentPage
 {
+	/// <summary>
+	/// Initializes the page and configures grouping on the data source.
+	/// </summary>
 	public ListViewPage()
 	{
 		InitializeComponent();

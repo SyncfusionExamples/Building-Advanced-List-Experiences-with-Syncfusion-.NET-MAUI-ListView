@@ -9,17 +9,17 @@
         <local:BookInfoRepository/>
     </ContentPage.BindingContext>
 
-    <sfListView:SfListView  x:Name="listView"
-                            ItemsSource="{Binding BookInfo}"
-                            SelectionMode="Multiple"
-                            IsStickyGroupHeader="True"
-                            AllowSwiping="True"
-                            ItemSize="70"
-                            DragStartMode="OnHold"
-                            LoadMoreOption="Manual"
-                            LoadMorePosition="End"
-                            LoadMoreCommand="{Binding LoadMoreItemsCommand}"
-                            LoadMoreCommandParameter="{Binding Source={x:Reference listView}}">
+    <sfListView:SfListView x:Name="listView"
+                           ItemsSource="{Binding BookInfo}"
+                           SelectionMode="Multiple"
+                           IsStickyGroupHeader="True"
+                           AllowSwiping="True"
+                           ItemSize="70"
+                           DragStartMode="OnHold"
+                           LoadMoreOption="Manual"
+                           LoadMorePosition="End"
+                           LoadMoreCommand="{Binding LoadMoreItemsCommand}"
+                           LoadMoreCommandParameter="{Binding Source={x:Reference listView}}">
 
         <sfListView:SfListView.GroupHeaderTemplate>
             <DataTemplate>
@@ -40,15 +40,19 @@
 
         <sfListView:SfListView.StartSwipeTemplate>
             <DataTemplate>
-                <Grid BackgroundColor="#E8F5E9" Padding="16">
-                    <Label Text="Favorite" TextColor="#2E7D32"/>
+                <Grid BackgroundColor="#E8F5E9" Padding="12">
+                    <Button Text="Favourite"
+                            FontSize="12"
+                            Padding="10"
+                            TextColor="White"
+                            BackgroundColor="#2E7032"/>
                 </Grid>
             </DataTemplate>
         </sfListView:SfListView.StartSwipeTemplate>
 
         <sfListView:SfListView.EndSwipeTemplate>
             <DataTemplate>
-                <Grid BackgroundColor="#FFEBEE" Padding="12" ColumnDefinitions="*,Auto">
+                <Grid BackgroundColor="#FFEBEE" Padding="12">
                     <Button Text="Delete"
                             TextColor="White"
                             BackgroundColor="#C62828"

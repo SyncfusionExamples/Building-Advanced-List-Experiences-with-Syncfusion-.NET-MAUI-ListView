@@ -7,11 +7,27 @@ namespace ListViewCollectionViewComparisonSample;
 /// Represents a bindable book item with name, description, and favorite flag.
 /// Implements INotifyPropertyChanged for UI data binding.
 /// </summary>
-public class BookInfo : INotifyPropertyChanged
+public partial class BookInfo : INotifyPropertyChanged
 {
     private string bookName;
     private string bookDesc;
     private bool isFavorite = false;
+    private int order;
+
+    /// <summary>
+    /// Gets or sets the current zero-based order of the item in the list.
+    /// Updates are reflected in the UI when grouping is rebuilt.
+    /// </summary>
+    public int Order
+    {
+        get => order;
+        set
+        {
+            if (order == value) return;
+            order = value;
+            OnPropertyChanged(nameof(Order));
+        }
+    }
 
     /// <summary>
     /// Gets or sets whether the book is marked as favorite.
@@ -61,20 +77,20 @@ public class BookInfo : INotifyPropertyChanged
     /// <summary>
     /// Occurs when a property value changes.
     /// </summary>
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
     /// Notifies listeners that a property value has changed.
     /// </summary>
     /// <param name="name">The name of the property that changed.</param>
-    private void OnPropertyChanged(string name) =>
+    private void OnPropertyChanged(string? name) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
 
 /// <summary>
 /// Represents a named group of <see cref="BookInfo"/> items for grouped UI views.
 /// </summary>
-public class BookGroup : ObservableCollection<BookInfo>
+public partial class BookGroup : ObservableCollection<BookInfo>
 {
     /// <summary>
     /// Gets the group name (for example, the first letter of book titles).

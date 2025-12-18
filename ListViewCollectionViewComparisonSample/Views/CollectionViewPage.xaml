@@ -7,46 +7,83 @@
         <local:BookInfoRepository />
     </ContentPage.BindingContext>
 
-    <CollectionView x:Name="List"
-                    ItemsSource="{Binding BookGroups}"
-                    IsGrouped="True"
-                    SelectionMode="Multiple">
-        <CollectionView.GroupHeaderTemplate>
-            <DataTemplate>
-                <Grid BackgroundColor="#f2f2f2" Padding="12">
-                    <Label Text="{Binding Name}" FontAttributes="Bold" />
-                </Grid>
-            </DataTemplate>
-        </CollectionView.GroupHeaderTemplate>
+    <!-- Sticky group header emulation: pinned header updated on scroll -->
+    <Grid RowDefinitions="Auto,*">
+        <Border BackgroundColor="#F2F2F2" Padding="8,4">
+            <Label Text="{Binding CurrentGroupName}" FontAttributes="Bold"/>
+        </Border>
 
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <SwipeView>
-                    <SwipeView.LeftItems>
-                        <SwipeItems Mode="Execute">
-                            <SwipeItem Text="Favorite"
-                                       BackgroundColor="#FFC107"
-                                       IconImageSource="star.png"
-                                       Command="{Binding BindingContext.FavoriteCommand, Source={x:Reference List}}"
-                                       CommandParameter="{Binding .}" />
-                        </SwipeItems>
-                    </SwipeView.LeftItems>
-                    <SwipeView.RightItems>
-                        <SwipeItems Mode="Execute">
-                            <SwipeItem Text="Delete"
-                                       BackgroundColor="#E53935"
-                                       IconImageSource="delete.png"
-                                       Command="{Binding BindingContext.DeleteCommand, Source={x:Reference List}}"
-                                       CommandParameter="{Binding .}" />
-                        </SwipeItems>
-                    </SwipeView.RightItems>
-
-                    <Grid Padding="12" RowDefinitions="Auto,Auto">
-                        <Label Text="{Binding BookName}" Grid.Row="0" FontAttributes="Bold" />
-                        <Label Text="{Binding BookDescription}" Grid.Row="1" Opacity="0.7" />
+        <CollectionView x:Name="List"
+                        Grid.Row="1"
+                        ItemsSource="{Binding BookGroups}"
+                        IsGrouped="True"
+                        SelectionMode="Multiple"
+                        ItemSizingStrategy="MeasureFirstItem"
+                        Scrolled="OnCollectionViewScrolled">
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <Grid BackgroundColor="#f2f2f2" Padding="12">
+                        <Label Text="{Binding Name}" FontAttributes="Bold" />
                     </Grid>
-                </SwipeView>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Favorite"
+                                           BackgroundColor="#E8F5E9"
+                                           IconImageSource="star.png"
+                                           Command="{Binding BindingContext.FavoriteCommand, Source={x:Reference List}}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Delete"
+                                           BackgroundColor="#E53935"
+                                           IconImageSource="delete.png"
+                                           Command="{Binding BindingContext.DeleteCommand, Source={x:Reference List}}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <!-- Mimic ListView ItemSize=70 with fixed item height & add drag/drop gestures with a visible drag handle icon -->
+                        <Grid Padding="12" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*" HeightRequest="70">
+                            <Grid.GestureRecognizers>
+                                <DropGestureRecognizer AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" />
+                            </Grid.GestureRecognizers>
+
+                            <!-- Drag handle icon (hamburger) -->
+                            <Label Grid.RowSpan="2" Grid.Column="0" VerticalOptions="Center" Margin="0,0,8,0" Text="≡≡" FontSize="18" Opacity="0.6">
+                                <Label.GestureRecognizers>
+                                    <DragGestureRecognizer CanDrag="True" DragStarting="OnDragStarting" DropCompleted="OnDropCompleted" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+                            <Label Text="{Binding BookName}" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" />
+                            <Label Text="{Binding BookDescription}" Grid.Row="1" Grid.Column="1" Opacity="0.7" />
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <!-- Manual Load More footer to mirror ListView's LoadMoreOption=Manual at End -->
+            <CollectionView.Footer>
+                <Grid Padding="12" BackgroundColor="Transparent" HorizontalOptions="Center" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto">
+                    <Button Text="Load More"
+                            Grid.Row="0" Grid.ColumnSpan="2"
+                            HorizontalOptions="Center"
+                            IsEnabled="{Binding HasMoreItems}"
+                            Command="{Binding LoadMoreItemsCommand}"
+                            CommandParameter="{Binding Source={x:Reference List}}" />
+                    <ActivityIndicator Grid.Row="1" Grid.ColumnSpan="2"
+                                       IsVisible="{Binding IsLoading}"
+                                       IsRunning="{Binding IsLoading}" />
+                </Grid>
+            </CollectionView.Footer>
+        </CollectionView>
+    </Grid>
 </ContentPage>

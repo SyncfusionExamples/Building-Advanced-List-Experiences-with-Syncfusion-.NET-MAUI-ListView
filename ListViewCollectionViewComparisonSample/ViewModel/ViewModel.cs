@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -8,7 +8,7 @@ namespace ListViewCollectionViewComparisonSample;
 /// ViewModel that exposes a paged, groupable collection of <see cref="BookInfo"/> items,
 /// with favorite toggle, delete, and incremental loading support for UI binding.
 /// </summary>
-public class BookInfoRepository : INotifyPropertyChanged
+public partial class BookInfoRepository : INotifyPropertyChanged
 {
     /// <summary>
     /// Number of items loaded per page during initial loading.
@@ -40,6 +40,31 @@ public class BookInfoRepository : INotifyPropertyChanged
         get => bookGroups;
         private set { bookGroups = value; OnPropertyChanged(nameof(BookGroups)); }
     }
+
+    private string currentGroupName = string.Empty;
+    /// <summary>
+    /// Name of the group currently at the top of the list (for sticky header emulation).
+    /// </summary>
+    public string CurrentGroupName
+    {
+        get => currentGroupName;
+        set { if (currentGroupName == value) return; currentGroupName = value; OnPropertyChanged(nameof(CurrentGroupName)); }
+    }
+
+    private bool isLoading;
+    /// <summary>
+    /// Indicates whether a load-more operation is in progress.
+    /// </summary>
+    public bool IsLoading
+    {
+        get => isLoading;
+        private set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
+    }
+
+    /// <summary>
+    /// Exposes whether more items can be loaded for binding (e.g., show/hide footer button).
+    /// </summary>
+    public bool HasMoreItems => CanLoadMore();
 
     /// <summary>
     /// Command to toggle the favorite state of a book.
@@ -83,6 +108,9 @@ public class BookInfoRepository : INotifyPropertyChanged
         AddBooks(0, PageSize);
         currentIndex = PageSize;
         RebuildGroups();
+        CurrentGroupName = BookGroups.FirstOrDefault()?.Name ?? string.Empty;
+        OnPropertyChanged(nameof(HasMoreItems));
+        (LoadMoreItemsCommand as Command<object>)?.ChangeCanExecute();
     }
 
     /// <summary>
@@ -94,7 +122,7 @@ public class BookInfoRepository : INotifyPropertyChanged
     /// <summary>
     /// Wrapper used by the load-more command to evaluate executability.
     /// </summary>
-    private bool CanLoadMoreItems(object obj) => CanLoadMore();
+    private bool CanLoadMoreItems(object obj) => CanLoadMore() && !IsLoading;
 
     /// <summary>
     /// Loads the next page of items and updates the UI; optionally toggles SfListView lazy loader.
@@ -104,16 +132,31 @@ public class BookInfoRepository : INotifyPropertyChanged
     /// </param>
     private async void LoadMoreItems(object obj)
     {
-        if (obj is Syncfusion.Maui.ListView.SfListView listView)
+        if (!CanLoadMore() || IsLoading)
         {
-            listView.IsLazyLoading = true;
-            await Task.Delay(1500);
-            listView.IsLazyLoading = false;
+            return;
+        }
+        else
+        {
+            if (obj is Syncfusion.Maui.ListView.SfListView listView)
+            {
+                // Show Syncfusion ListView's built-in lazy loader while fetching next page
+                listView.IsLazyLoading = true;
+                await Task.Delay(2000);
+                listView.IsLazyLoading = false;
+            }
+            else
+            {
+                // CollectionView path uses the footer ActivityIndicator bound to IsLoading
+                IsLoading = true;
+                await Task.Delay(2000);
+                IsLoading = false;
+            }
+
             AddBooks(currentIndex, PageSize);
             currentIndex += PageSize;
+            RebuildGroups();
         }
-
-        (LoadMoreItemsCommand as Command<object>)?.ChangeCanExecute();
     }
 
     /// <summary>
@@ -236,7 +279,11 @@ public class BookInfoRepository : INotifyPropertyChanged
         };
 
         for (int i = start; i < start + count && i < books.Length; i++)
-            BookInfo.Add(books[i]);
+        {
+            var item = books[i];
+            item.Order = BookInfo.Count; // sequential order as items are added
+            BookInfo.Add(item);
+        }
     }
 
     /// <summary>
@@ -246,10 +293,30 @@ public class BookInfoRepository : INotifyPropertyChanged
     {
         var groups = BookInfo
             .GroupBy(b => string.IsNullOrWhiteSpace(b.BookName) ? "#" : b.BookName.Substring(0, 1).ToUpperInvariant())
-            .OrderBy(g => g.Key)
-            .Select(g => new BookGroup(g.Key, g.OrderBy(b => b.BookName)));
+            .OrderBy(g => g.Min(b => b.Order)) // order groups by first appearance in the flat list
+            .Select(g => new BookGroup(g.Key, g.OrderBy(b => b.Order))); // keep item order per group
 
         BookGroups = new ObservableCollection<BookGroup>(groups);
+        if (string.IsNullOrEmpty(CurrentGroupName))
+            CurrentGroupName = BookGroups.FirstOrDefault()?.Name ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Public method to rebuild groups, useful for UI interactions like drag/drop reorder.
+    /// </summary>
+    public void RefreshGroups() => RebuildGroups();
+
+    /// <summary>
+    /// Reindex the Order property to match the current sequence in BookInfo.
+    /// Call after reordering items.
+    /// </summary>
+    public void ReindexOrders()
+    {
+        for (int i = 0; i < BookInfo.Count; i++)
+        {
+            if (BookInfo[i].Order != i)
+                BookInfo[i].Order = i;
+        }
     }
 
     /// <summary>
