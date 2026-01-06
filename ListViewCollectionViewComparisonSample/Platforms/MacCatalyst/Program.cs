@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace ListViewCollectionViewComparisonSample
+namespace ListViewComparisonSample
 {
     public class Program
     {

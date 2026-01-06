@@ -1,15 +1,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sfListView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
              xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
-             xmlns:local="clr-namespace:ListViewCollectionViewComparisonSample"
-             x:Class="ListViewCollectionViewComparisonSample.ListViewPage">
+             xmlns:local="clr-namespace:ListViewComparisonSample"
+             x:Class="ListViewComparisonSample.ListViewPage">
 
     <ContentPage.BindingContext>
         <local:BookInfoRepository/>
     </ContentPage.BindingContext>
 
-    <sfListView:SfListView x:Name="listView"
+    <listView:SfListView x:Name="listView"
                            ItemsSource="{Binding BookInfo}"
                            SelectionMode="Multiple"
                            IsStickyGroupHeader="True"
@@ -21,24 +21,24 @@
                            LoadMoreCommand="{Binding LoadMoreItemsCommand}"
                            LoadMoreCommandParameter="{Binding Source={x:Reference listView}}">
 
-        <sfListView:SfListView.GroupHeaderTemplate>
+        <listView:SfListView.GroupHeaderTemplate>
             <DataTemplate>
-                <Grid BackgroundColor="#F2F2F2" Padding="8,4">
-                    <Label Text="{Binding Key}" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                <Grid BackgroundColor="LightBlue" Padding="8,4">
+                    <Label Text="{Binding Key}" VerticalTextAlignment="Center" TextColor="Red" FontAttributes="Bold" />
                 </Grid>
             </DataTemplate>
-        </sfListView:SfListView.GroupHeaderTemplate>
+        </listView:SfListView.GroupHeaderTemplate>
 
-        <sfListView:SfListView.ItemTemplate>
+        <listView:SfListView.ItemTemplate>
             <DataTemplate>
                 <Grid Padding="12" RowDefinitions="Auto,Auto">
-                    <Label Text="{Binding BookName}" Grid.Row="0" FontAttributes="Bold" />
-                    <Label Text="{Binding BookDescription}" Grid.Row="1" Opacity="0.7" />
+                    <Label Text="{Binding BookName}" TextColor="Green" Grid.Row="0" FontAttributes="Bold" />
+                    <Label Text="{Binding BookDescription}" TextColor="Green" Grid.Row="1" Opacity="0.7" />
                 </Grid>
             </DataTemplate>
-        </sfListView:SfListView.ItemTemplate>
+        </listView:SfListView.ItemTemplate>
 
-        <sfListView:SfListView.StartSwipeTemplate>
+        <listView:SfListView.StartSwipeTemplate>
             <DataTemplate>
                 <Grid BackgroundColor="#E8F5E9" Padding="12">
                     <Button Text="Favourite"
@@ -48,9 +48,9 @@
                             BackgroundColor="#2E7032"/>
                 </Grid>
             </DataTemplate>
-        </sfListView:SfListView.StartSwipeTemplate>
+        </listView:SfListView.StartSwipeTemplate>
 
-        <sfListView:SfListView.EndSwipeTemplate>
+        <listView:SfListView.EndSwipeTemplate>
             <DataTemplate>
                 <Grid BackgroundColor="#FFEBEE" Padding="12">
                     <Button Text="Delete"
@@ -60,6 +60,6 @@
                             CommandParameter="{Binding .}"/>
                 </Grid>
             </DataTemplate>
-        </sfListView:SfListView.EndSwipeTemplate>
-    </sfListView:SfListView>
+        </listView:SfListView.EndSwipeTemplate>
+    </listView:SfListView>
 </ContentPage>

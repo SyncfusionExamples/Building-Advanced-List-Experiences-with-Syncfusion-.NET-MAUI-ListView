@@ -1,4 +1,4 @@
-﻿namespace ListViewCollectionViewComparisonSample
+namespace ListViewComparisonSample
 {
     public partial class AppShell : Shell
     {

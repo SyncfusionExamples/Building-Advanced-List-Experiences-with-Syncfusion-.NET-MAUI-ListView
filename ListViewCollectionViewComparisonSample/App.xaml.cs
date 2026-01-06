@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace ListViewCollectionViewComparisonSample
+namespace ListViewComparisonSample
 {
     public partial class App : Application
     {

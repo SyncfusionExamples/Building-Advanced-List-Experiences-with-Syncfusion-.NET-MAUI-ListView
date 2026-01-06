@@ -1,4 +1,4 @@
-namespace ListViewCollectionViewComparisonSample;
+namespace ListViewComparisonSample;
 
 /// <summary>
 /// Page demonstrating a grouped CollectionView with sticky header emulation,

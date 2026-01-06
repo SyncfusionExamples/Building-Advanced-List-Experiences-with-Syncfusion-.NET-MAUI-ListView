@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace ListViewCollectionViewComparisonSample
+namespace ListViewComparisonSample
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
