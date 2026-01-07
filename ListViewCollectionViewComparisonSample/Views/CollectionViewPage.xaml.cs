@@ -1,3 +1,5 @@
+using AndroidX.Lifecycle;
+
 namespace ListViewComparisonSample;
 
 /// <summary>
@@ -18,7 +20,7 @@ public partial class CollectionViewPage : ContentPage
     /// <summary>
     /// Strongly-typed access to the bound ViewModel.
     /// </summary>
-    private BookInfoRepository Vm => BindingContext as BookInfoRepository;
+    private BookInfoRepository viewModel => BindingContext as BookInfoRepository;
 
     /// <summary>
     /// Handles page Loaded to initialize the pinned header text.
@@ -42,26 +44,26 @@ public partial class CollectionViewPage : ContentPage
     /// <param name="firstVisibleIndex">The flat index of the first visible item.</param>
     private void UpdateCurrentGroupHeader(int firstVisibleIndex = 0)
     {
-        if (Vm == null || Vm.BookGroups == null || Vm.BookGroups.Count == 0)
+        if (viewModel == null || viewModel.BookGroups == null || viewModel.BookGroups.Count == 0)
             return;
 
         var index = firstVisibleIndex < 0 ? 0 : firstVisibleIndex;
 
         // Map to group by flattening groups until we cover firstVisibleIndex
         int cursor = 0;
-        foreach (var group in Vm.BookGroups)
+        foreach (var group in viewModel.BookGroups)
         {
             int groupCount = group.Count;
             if (index < cursor + groupCount)
             {
-                Vm.CurrentGroupName = group.Name;
+                viewModel.CurrentGroupName = group.Name;
                 return;
             }
             cursor += groupCount;
         }
 
         // Fallback
-        Vm.CurrentGroupName = Vm.BookGroups[0].Name;
+        viewModel.CurrentGroupName = viewModel.BookGroups[0].Name;
     }
 
     /// <summary>
@@ -80,13 +82,13 @@ public partial class CollectionViewPage : ContentPage
     /// </summary>
     private void OnDrop(object sender, DropEventArgs e)
     {
-        if (Vm == null) return;
+        if (viewModel == null) return;
         if (!e.Data.Properties.TryGetValue("item", out var payload) || payload is not BookInfo source)
             return;
 
         if (sender is Element element && element.BindingContext is BookInfo target && !ReferenceEquals(source, target))
         {
-            var list = Vm.BookInfo;
+            var list = viewModel.BookInfo;
             var sourceIndex = list.IndexOf(source);
             var targetIndex = list.IndexOf(target);
             if (sourceIndex >= 0 && targetIndex >= 0)
@@ -98,8 +100,8 @@ public partial class CollectionViewPage : ContentPage
                 list.RemoveAt(sourceIndex);
                 list.Insert(targetIndex, source);
                 // Update stable order indices and rebuild grouping to reflect new order in the UI
-                Vm.ReindexOrders();
-                Vm.RefreshGroups();
+                viewModel.ReindexOrders();
+                viewModel.RefreshGroups();
             }
         }
     }

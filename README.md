@@ -47,4 +47,4 @@ Syncfusion® .NET MAUI List View is significantly better in memory efficiency, e
 ### Path too long exception
 If you are facing a path too long exception when building this example project, close Visual Studio and rename the repository to a shorter name before building the project.
 
-For a step-by-step procedure, refer to the [AI-Powered Billionaire Wealth Dashboard Blog](https://www.syncfusion.com/blogs/post/ai-powered-winui-line-chart).
+For a step-by-step procedure, refer to the AI-Powered Billionaire Wealth Dashboard Blog.

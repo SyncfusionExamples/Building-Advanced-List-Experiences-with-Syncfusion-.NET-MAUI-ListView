@@ -323,9 +323,9 @@ public partial class BookInfoRepository : INotifyPropertyChanged
 	private void RebuildGroups()
 	{
 		var groups = BookInfo
-			.GroupBy(b => string.IsNullOrWhiteSpace(b.BookName) ? "#" : b.BookName.Substring(0, 1).ToUpperInvariant())
-			.OrderBy(g => g.Min(b => b.Order)) // order groups by first appearance in the flat list
-			.Select(g => new BookGroup(g.Key, g.OrderBy(b => b.Order))); // keep item order per group
+			.GroupBy(books => string.IsNullOrWhiteSpace(books.BookName) ? "#" : books.BookName.Substring(0, 1).ToUpperInvariant())
+			.OrderBy(group => group.Min(books => books.Order)) // order groups by first appearance in the flat list
+			.Select(group => new BookGroup(group.Key, group.OrderBy(books => books.Order))); // keep item order per group
 
 		BookGroups = new ObservableCollection<BookGroup>(groups);
 
