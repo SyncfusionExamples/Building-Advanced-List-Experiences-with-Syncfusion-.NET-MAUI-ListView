@@ -1,0 +1,65 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             xmlns:data="clr-namespace:Syncfusion.Maui.DataSource;assembly=Syncfusion.Maui.DataSource"
+             xmlns:local="clr-namespace:ListViewComparisonSample"
+             x:Class="ListViewComparisonSample.ListViewPage">
+
+    <ContentPage.BindingContext>
+        <local:BookInfoRepository/>
+    </ContentPage.BindingContext>
+
+    <listView:SfListView x:Name="listView"
+                           ItemsSource="{Binding BookInfo}"
+                           SelectionMode="Multiple"
+                           IsStickyGroupHeader="True"
+                           AllowSwiping="True"
+                           ItemSize="70"
+                           DragStartMode="OnHold"
+                           LoadMoreOption="Manual"
+                           LoadMorePosition="End"
+                           LoadMoreCommand="{Binding LoadMoreItemsCommand}"
+                           LoadMoreCommandParameter="{Binding Source={x:Reference listView}}">
+
+        <listView:SfListView.GroupHeaderTemplate>
+            <DataTemplate>
+                <Grid BackgroundColor="LightBlue" Padding="8,4">
+                    <Label Text="{Binding Key}" VerticalTextAlignment="Center" TextColor="Red" FontAttributes="Bold" />
+                </Grid>
+            </DataTemplate>
+        </listView:SfListView.GroupHeaderTemplate>
+
+        <listView:SfListView.ItemTemplate>
+            <DataTemplate>
+                <Grid Padding="12" RowDefinitions="Auto,Auto">
+                    <Label Text="{Binding BookName}" TextColor="Green" Grid.Row="0" FontAttributes="Bold" />
+                    <Label Text="{Binding BookDescription}" TextColor="Green" Grid.Row="1" Opacity="0.7" />
+                </Grid>
+            </DataTemplate>
+        </listView:SfListView.ItemTemplate>
+
+        <listView:SfListView.StartSwipeTemplate>
+            <DataTemplate>
+                <Grid BackgroundColor="#E8F5E9" Padding="12">
+                    <Button Text="Favourite"
+                            FontSize="12"
+                            Padding="10"
+                            TextColor="White"
+                            BackgroundColor="#2E7032"/>
+                </Grid>
+            </DataTemplate>
+        </listView:SfListView.StartSwipeTemplate>
+
+        <listView:SfListView.EndSwipeTemplate>
+            <DataTemplate>
+                <Grid BackgroundColor="#FFEBEE" Padding="12">
+                    <Button Text="Delete"
+                            TextColor="White"
+                            BackgroundColor="#C62828"
+                            Command="{Binding BindingContext.DeleteCommand, Source={x:Reference listView}}"
+                            CommandParameter="{Binding .}"/>
+                </Grid>
+            </DataTemplate>
+        </listView:SfListView.EndSwipeTemplate>
+    </listView:SfListView>
+</ContentPage>
