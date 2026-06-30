@@ -31,7 +31,7 @@ This sample showcases features commonly used in real-world applications, includi
  
 These scenarios often require grouping, swipe interactions, drag-and-drop support, dynamic data loading, and efficient rendering of large collections.
  
-![ListView output](ListViewCollectionViewComparisonSample/Resources/Gifs/ListViewDemo.gif)
+![ListView output](ListViewCollectionViewFeatureShowcase/Resources/Gifs/ListViewDemo.gif)
  
 ## Troubleshooting
  
