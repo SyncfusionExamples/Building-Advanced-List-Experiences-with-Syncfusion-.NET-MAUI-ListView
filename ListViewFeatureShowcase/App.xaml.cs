@@ -1,4 +1,4 @@
-namespace ListViewComparisonSample
+namespace ListViewFeatureShowcase
 {
     public partial class App : Application
     {

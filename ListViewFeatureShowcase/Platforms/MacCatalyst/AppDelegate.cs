@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace ListViewComparisonSample
+namespace ListViewFeatureShowcase
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

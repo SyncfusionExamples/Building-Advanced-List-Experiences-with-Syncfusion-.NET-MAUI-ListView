@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace ListViewComparisonSample;
+namespace ListViewFeatureShowcase;
 
 /// <summary>
 /// ViewModel that exposes a paged, groupable collection of <see cref="BookInfo"/> items,
@@ -107,7 +107,7 @@ public partial class BookInfoRepository : INotifyPropertyChanged
 	/// <summary>
 	/// Occurs when a property value changes. 
 	/// </summary>
-	public event PropertyChangedEventHandler PropertyChanged;
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	protected void OnPropertyChanged(string name) =>
 		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -180,7 +180,6 @@ public partial class BookInfoRepository : INotifyPropertyChanged
 			}
 			else
 			{
-				// CollectionView path uses the footer ActivityIndicator bound to IsLoading
 				IsLoading = true;
 				await Task.Delay(2000);
 				IsLoading = false;
@@ -358,16 +357,24 @@ public partial class BookInfoRepository : INotifyPropertyChanged
 	/// <summary>
 	/// Toggles the favorite state of the specified <paramref name="book"/>.
 	/// </summary>
-	private void OnFavorite(BookInfo book)
+	private async void OnFavorite(BookInfo book)
 	{
 		if (book == null) return;
 		book.IsFavorite = !book.IsFavorite;
-	}
 
-	/// <summary>
-	/// Removes the specified <paramref name="book"/> from <see cref="BookInfo"/> and refreshes groups.
-	/// </summary>
-	private void OnDelete(BookInfo book)
+        await Shell.Current.DisplayAlertAsync(
+                "Favorite",
+                book.IsFavorite
+                    ? "Added to Favorites"
+                    : "Removed from Favorites",
+                "OK");
+
+    }
+
+    /// <summary>
+    /// Removes the specified <paramref name="book"/> from <see cref="BookInfo"/> and refreshes groups.
+    /// </summary>
+    private void OnDelete(BookInfo book)
 	{
 		if (book == null) return;
 		if (BookInfo.Remove(book))

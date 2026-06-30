@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace ListViewComparisonSample
+namespace ListViewFeatureShowcase
 {
     [Application]
     public class MainApplication : MauiApplication
