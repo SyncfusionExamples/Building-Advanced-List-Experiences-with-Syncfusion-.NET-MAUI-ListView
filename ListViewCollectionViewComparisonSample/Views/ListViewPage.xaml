@@ -45,6 +45,8 @@
                             FontSize="12"
                             Padding="10"
                             TextColor="White"
+                            Command="{Binding BindingContext.FavoriteCommand, Source={x:Reference listView}}"
+                            CommandParameter="{Binding .}"
                             BackgroundColor="#2E7032"/>
                 </Grid>
             </DataTemplate>
