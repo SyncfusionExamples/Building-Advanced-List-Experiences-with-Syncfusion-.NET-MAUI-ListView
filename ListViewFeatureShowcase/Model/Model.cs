@@ -14,8 +14,8 @@ public partial class BookInfo : INotifyPropertyChanged
 {
 	#region Fields
 
-	private string bookName;
-	private string bookDesc;
+	private string? bookName;
+	private string? bookDesc;
 	private bool isFavorite = false;
 	private int order;
 
@@ -59,7 +59,7 @@ public partial class BookInfo : INotifyPropertyChanged
 	/// </summary>
 	public string BookName
 	{
-		get => bookName;
+		get => bookName!;
 		set
 		{
 			if (bookName == value) return;
@@ -74,7 +74,7 @@ public partial class BookInfo : INotifyPropertyChanged
 	/// </summary>
 	public string BookDescription
 	{
-		get => bookDesc;
+		get => bookDesc!;
 		set
 		{
 			if (bookDesc == value) return;

@@ -15,14 +15,17 @@ public partial class ListViewPage : ContentPage
 		InitializeComponent();
 
         // Group items by the first character of BookName (uppercase).
-        listView.DataSource.GroupDescriptors.Add(new GroupDescriptor()
-        {
-            PropertyName = "BookName",
-            KeySelector = (object obj1) =>
+        if (listView != null && listView.DataSource != null)
+        { 
+            listView.DataSource.GroupDescriptors.Add(new GroupDescriptor()
             {
-                var item = (obj1 as BookInfo);
-                return item.BookName[0].ToString();
-            }
-        });
+                PropertyName = "BookName",
+                KeySelector = (object obj1) =>
+                {
+                    var item = (obj1 as BookInfo);
+                    return item!.BookName[0].ToString();
+                }
+            });
+        }
     }
 }
