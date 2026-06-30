@@ -8,8 +8,6 @@ This sample demonstrates several advanced list scenarios commonly found in moder
  
 Using built-in APIs, templates, and MVVM-friendly patterns, developers can create scalable and responsive user experiences while reducing implementation complexity.
  
----
- 
 ## Features Demonstrated in This Sample
  
 1. Grouping with Sticky Headers: Displays grouped data while keeping the active group header visible during scrolling.
@@ -18,8 +16,6 @@ Using built-in APIs, templates, and MVVM-friendly patterns, developers can creat
 4. Incremental Loading: Loads data on demand to support large datasets efficiently.
 5. Flexible Layouts: Supports both traditional list layouts and grid-based presentations.
 6. Item Sizing and Virtualization: Helps maintain smooth scrolling and efficient rendering when working with large collections.
- 
----
  
 ## Application Scenarios
  
@@ -35,13 +31,13 @@ This sample showcases features commonly used in real-world applications, includi
  
 These scenarios often require grouping, swipe interactions, drag-and-drop support, dynamic data loading, and efficient rendering of large collections.
  
---- [Demo Gif] ---
+![ListView output](ListViewCollectionViewComparisonSample/Resources/Gifs/ListViewDemo.gif)
  
 ## Troubleshooting
  
 ### Path Too Long Exception
  
 If you are facing a path too long exception when building this example project, close Visual Studio and rename the repository to a shorter name before building the project.
-For a step-by-step procedure, refer to the
+For a step-by-step procedure, refer to the Building Advanced List Experiences with Syncfusion .NET MAUI ListView.
  
 We are always happy to assist you.

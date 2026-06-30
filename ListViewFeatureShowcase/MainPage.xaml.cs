@@ -1,4 +1,4 @@
-namespace ListViewComparisonSample
+namespace ListViewFeatureShowcase
 {
     /// <summary>
     /// Landing page to navigate to the CollectionView and SfListView samples.

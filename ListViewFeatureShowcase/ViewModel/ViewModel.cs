@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace ListViewComparisonSample;
+namespace ListViewFeatureShowcase;
 
 /// <summary>
 /// ViewModel that exposes a paged, groupable collection of <see cref="BookInfo"/> items,

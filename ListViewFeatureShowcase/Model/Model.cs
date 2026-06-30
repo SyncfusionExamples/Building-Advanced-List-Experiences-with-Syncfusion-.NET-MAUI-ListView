@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace ListViewComparisonSample;
+namespace ListViewFeatureShowcase;
 
 #region BookInfo model
 

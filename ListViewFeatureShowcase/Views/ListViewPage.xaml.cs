@@ -1,5 +1,5 @@
 using Syncfusion.Maui.DataSource;
-namespace ListViewComparisonSample;
+namespace ListViewFeatureShowcase;
 
 /// <summary>
 /// Page demonstrating Syncfusion SfListView with grouping, swipe actions,

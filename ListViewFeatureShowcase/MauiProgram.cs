@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
 
-namespace ListViewComparisonSample
+namespace ListViewFeatureShowcase
 {
     public static class MauiProgram
     {
